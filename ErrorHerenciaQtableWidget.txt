@@ -1,0 +1,429 @@
+class Busqueda1(QWidget):
+    def __init__(self, parent=None):
+        super(Busqueda1, self).__init__(parent)
+
+        self.nombrecliente=QLabel()
+        self.nombrecliente.setText("Busqueda por cliente")
+        self.nombrecliente.setObjectName("nombrecliente")
+
+        self.cliente=QtWidgets.QComboBox(self)
+        self.buscarclientecombobox()
+        self.addcliente=QPushButton(self)
+        self.addcliente.setText("Buscar por cliente")
+        ctabla=Tablas()
+        self.addcliente.clicked.connect(ctabla.Clientetabla())
+
+        self.nombremotor=QLabel()
+        self.nombremotor.setText("Busqueda por motor")
+
+        self.motor=QtWidgets.QComboBox(self)
+        self.busquedapormarcacombobox()
+        self.addmotor=QPushButton(self)
+        self.addmotor.setText("Busqueda por motor")
+        self.addmotor.clicked.connect(ctabla.MotorTabla())
+
+        self.xhp=QLabel()
+        self.xhp.setText("Busqueda por hp")
+
+        self.hp=QtWidgets.QComboBox(self)
+        self.busquedaporHp()
+        self.addhp=QPushButton(self)
+        self.addhp.setText("Busqueda por hp")
+        self.addhp.clicked.connect(ctabla.HpTabla())
+
+        self.xv=QLabel()
+        self.xv.setText("Busqueda por voltaje")
+
+        self.voltaje=QtWidgets.QComboBox(self)
+        self.busquedaporVoltaje()
+        self.addv=QPushButton(self)
+        self.addv.setText("Busqueda por voltaje")
+        self.addv.clicked.connect(ctabla.VolTabla())
+
+        self.xrpm=QLabel()
+        self.xrpm.setText("Busqueda por RPM")
+
+        self.rpm=QtWidgets.QComboBox(self)
+        self.busquedaporRpm()
+        self.addrpm=QPushButton(self)
+        self.addrpm.setText("Busqueda por RPM")
+        self.addrpm.clicked.connect(ctabla.RpmTabla())
+
+        self.xamp=QLabel()
+        self.xamp.setText("Busqueda por AMP")
+
+        self.amp=QtWidgets.QComboBox(self)
+        self.busquedaporAmp()
+        self.addamp=QPushButton(self)
+        self.addamp.setText("Busqueda por AMP")
+        self.addamp.clicked.connect(ctabla.AmpTabla())
+
+
+        self.tab3 = QVBoxLayout(self)
+        self.tab3.addWidget(self.nombrecliente)
+        self.tab3.addWidget(self.cliente)
+        self.tab3.addWidget(self.addcliente)
+        self.tab3.addWidget(self.nombremotor)
+        self.tab3.addWidget(self.motor)
+        self.tab3.addWidget(self.addmotor)
+        self.tab3.addWidget(self.xhp)
+        self.tab3.addWidget(self.hp)
+        self.tab3.addWidget(self.addhp)
+        self.tab3.addWidget(self.xv)
+        self.tab3.addWidget(self.voltaje)
+        self.tab3.addWidget(self.addv)
+        self.tab3.addWidget(self.xrpm)
+        self.tab3.addWidget(self.rpm)
+        self.tab3.addWidget(self.addrpm)
+        self.tab3.addWidget(self.xamp)
+        self.tab3.addWidget(self.amp)
+        self.tab3.addWidget(self.addamp) 
+        self.setLayout(self.tab3)
+
+
+    def buscarclientecombobox(self):
+        sql="select * from clientes"
+        cursor.execute(sql)
+        clientes=cursor.fetchone()
+        lista=[]
+        while clientes != None:
+            nombrec=clientes[1]
+            estadoc=int(clientes[3])
+            if estadoc == 1:
+                lista.append(nombrec)
+            clientes=cursor.fetchone()
+        for a in (lista):
+            self.cliente.addItem(a)
+
+
+    def busquedapormarcacombobox(self):
+        sql="select * from motores"
+        cursor.execute(sql)
+        clientes=cursor.fetchone()
+        lista=[]
+        while clientes!= None:
+            nombrem=clientes[2]
+            estadom=int(clientes[4])
+            if estadom == 1:
+                lista.append(nombrem)
+            clientes=cursor.fetchone()
+        for a in (lista):
+            self.motor.addItem(a)
+
+#desde este punto los datos buscamos desde datos motores
+
+    def busquedaporHp(self):
+        sql="select * from datosmotores"
+        cursor.execute(sql)
+        clientes=cursor.fetchone()
+        lista=[]
+        while clientes!= None:
+            hpe=int(clientes[1])
+            lista.append(hpe)
+            clientes=cursor.fetchone()
+        listaor=sorted(set(lista))
+        for a in (listaor):
+            self.hp.addItem(str(a))
+
+    def busquedaporVoltaje(self):
+        sql="select * from datosmotores"
+        cursor.execute(sql)
+        clientes=cursor.fetchone()
+        lista=[]
+        while clientes!= None:
+            volt=int(clientes[2])
+            lista.append(volt)
+            clientes=cursor.fetchone()
+        listaor=sorted(set(lista))
+        for a in (listaor):
+            self.voltaje.addItem(str(a))
+
+    def busquedaporRpm(self):
+        sql="select * from datosmotores"
+        cursor.execute(sql)
+        clientes=cursor.fetchone()
+        lista=[]
+        while clientes!= None:
+            rpem=int(clientes[3])
+            lista.append(rpem)
+            clientes=cursor.fetchone()
+        listaor=sorted(set(lista))
+        for a in (listaor):
+            self.rpm.addItem(str(a))
+
+    def busquedaporAmp(self):
+        sql="select * from datosmotores"
+        cursor.execute(sql)
+        clientes=cursor.fetchone()
+        lista=[]
+        while clientes!= None:
+            amper=int(clientes[4])
+            lista.append(amper)
+            clientes=cursor.fetchone()
+        listaor=sorted(set(lista))
+        for a in (listaor):
+            self.amp.addItem(str(a))
+
+
+class Tablas(Busqueda1):
+    def __init__(self, parent=None):
+        super(Tablas, self).__init__(parent)
+        Busqueda1.__init__(cliente,motor,voltaje,hp,rpm,amp)
+
+        #En esta parte sacamos los atributos de Busqueda que queremos
+        self.tablewidget=QTableWidget(self)
+        self.tablewidget.setRowCount(6)
+        #las filas voy a ir agregando a medida que busco en la base de datos
+        self.tablewidget.setColumnCount(6)
+        self.tablewidget.setHorizontalHeaderLabels(["Nombre","Marca","Hp","Voltaje","Rpm","Amp"])
+        self.tablewidget.horizontalHeaderItem( 0 ) . setTextAlignment ( Qt . AlignHCenter )
+        self.tablewidget.horizontalHeaderItem( 1 ) . setTextAlignment ( Qt . AlignHCenter )
+        self.tablewidget.horizontalHeaderItem( 2 ) . setTextAlignment ( Qt . AlignHCenter )
+        self.tablewidget.horizontalHeaderItem( 3 ) . setTextAlignment ( Qt . AlignHCenter )
+        self.tablewidget.horizontalHeaderItem( 4 ) . setTextAlignment ( Qt . AlignHCenter )
+        self.tablewidget.horizontalHeaderItem( 5 ) . setTextAlignment ( Qt . AlignHCenter )
+
+        self.tab4 = QVBoxLayout(self)
+        self.tab4.addWidget(self.tablewidget)
+        self.setLayout(self.tab4)
+
+
+    def Clientetabla(self):
+        if self.tablewidget !="":
+            self.tablewidget.clear()
+        sql="select * from clientes,motores,datosmotores"
+        cursor.execute(sql)
+        self.tablewidget.setRowCount(0)
+        nc=self.cliente.currentText()
+        clientes=cursor.fetchone()
+        lista=[]
+        while clientes != None:
+            idcliente=int(clientes[0])
+            idmotor=int(clientes[4])
+            clienteid=int(clientes[5])
+            nombrec=clientes[1]
+            nombrem=clientes[6]
+            fecha=clientes[7]
+            estado=int(clientes[8])
+            motor=int(clientes[9])
+            hp=int(clientes[10])
+            v=int(clientes[11])
+            rpm=int(clientes[12])
+            amp=int(clientes[13])
+            datos=clientes[14]
+            if  nc == nombrec:
+                if idcliente == clienteid and idmotor==motor:
+                    registro=nombrec,nombrem,str(hp),str(v),str(rpm),str(amp)
+                    lista.append(registro)
+            clientes=cursor.fetchone()
+        c=0
+        for a in (lista):
+            self.tablewidget.setRowCount(c+1)
+            self.tablewidget.setHorizontalHeaderLabels(["Nombre","Marca","Hp","Voltaje","Rpm","Amp"])
+            self.tablewidget.setItem(c,0, QTableWidgetItem(a[0]))
+            self.tablewidget.setItem(c,1, QTableWidgetItem(a[1]))
+            self.tablewidget.setItem(c,2, QTableWidgetItem(str(a[2])))
+            self.tablewidget.setItem(c,3, QTableWidgetItem(str(a[3])))
+            self.tablewidget.setItem(c,4, QTableWidgetItem(str(a[4])))
+            self.tablewidget.setItem(c,5, QTableWidgetItem(str(a[5])))
+            c+=1
+
+    def MotorTabla(self):
+        if self.tablewidget !="":
+            self.tablewidget.clear()
+        sql="select * from clientes,motores,datosmotores"
+        cursor.execute(sql)
+        self.tablewidget.setRowCount(0)
+        nm=self.motor.currentText()
+        clientes=cursor.fetchone()
+        lista=[]
+        while clientes != None:
+            idcliente=int(clientes[0])
+            idmotor=int(clientes[4])
+            clienteid=int(clientes[5])
+            nombrec=clientes[1]
+            nombrem=clientes[6]
+            fecha=clientes[7]
+            estado=int(clientes[8])
+            motor=int(clientes[9])
+            hp=int(clientes[10])
+            v=int(clientes[11])
+            rpm=int(clientes[12])
+            amp=int(clientes[13])
+            datos=clientes[14]
+            if  nm == nombrem:
+                if idcliente == clienteid and idmotor==motor:
+                    registro=nombrec,nombrem,str(hp),str(v),str(rpm),str(amp)
+                    lista.append(registro)
+            clientes=cursor.fetchone()
+        c=0
+        for a in (lista):
+            self.tablewidget.setRowCount(c+1)
+            self.tablewidget.setHorizontalHeaderLabels(["Nombre","Marca","Hp","Voltaje","Rpm","Amp"])
+            self.tablewidget.setItem(c,0, QTableWidgetItem(a[0]))
+            self.tablewidget.setItem(c,1, QTableWidgetItem(a[1]))
+            self.tablewidget.setItem(c,2, QTableWidgetItem(str(a[2])))
+            self.tablewidget.setItem(c,3, QTableWidgetItem(str(a[3])))
+            self.tablewidget.setItem(c,4, QTableWidgetItem(str(a[4])))
+            self.tablewidget.setItem(c,5, QTableWidgetItem(str(a[5])))
+            c+=1
+
+    def HpTabla(self):
+        if self.tablewidget !="":
+            self.tablewidget.clear()
+        sql="select * from clientes,motores,datosmotores"
+        cursor.execute(sql)
+        self.tablewidget.setRowCount(0)
+        nhp=int(self.hp.currentText())
+        clientes=cursor.fetchone()
+        lista=[]
+        while clientes != None:
+            idcliente=int(clientes[0])
+            idmotor=int(clientes[4])
+            clienteid=int(clientes[5])
+            nombrec=clientes[1]
+            nombrem=clientes[6]
+            fecha=clientes[7]
+            estado=int(clientes[8])
+            motor=int(clientes[9])
+            hp=int(clientes[10])
+            v=int(clientes[11])
+            rpm=int(clientes[12])
+            amp=int(clientes[13])
+            datos=clientes[14]
+            if  nhp == hp:
+                if idcliente == clienteid and idmotor==motor:
+                    registro=nombrec,nombrem,str(hp),str(v),str(rpm),str(amp)
+                    lista.append(registro)
+            clientes=cursor.fetchone()
+        c=0
+        for a in (lista):
+            self.tablewidget.setRowCount(c+1)
+            self.tablewidget.setHorizontalHeaderLabels(["Nombre","Marca","Hp","Voltaje","Rpm","Amp"])
+            self.tablewidget.setItem(c,0, QTableWidgetItem(a[0]))
+            self.tablewidget.setItem(c,1, QTableWidgetItem(a[1]))
+            self.tablewidget.setItem(c,2, QTableWidgetItem(str(a[2])))
+            self.tablewidget.setItem(c,3, QTableWidgetItem(str(a[3])))
+            self.tablewidget.setItem(c,4, QTableWidgetItem(str(a[4])))
+            self.tablewidget.setItem(c,5, QTableWidgetItem(str(a[5])))
+            c+=1
+
+    def VolTabla(self):
+        if self.tablewidget !="":
+            self.tablewidget.clear()
+        sql="select * from clientes,motores,datosmotores"
+        cursor.execute(sql)
+        self.tablewidget.setRowCount(0)
+        vol=int(self.voltaje.currentText())
+        clientes=cursor.fetchone()
+        lista=[]
+        while clientes != None:
+            idcliente=int(clientes[0])
+            idmotor=int(clientes[4])
+            clienteid=int(clientes[5])
+            nombrec=clientes[1]
+            nombrem=clientes[6]
+            fecha=clientes[7]
+            estado=int(clientes[8])
+            motor=int(clientes[9])
+            hp=int(clientes[10])
+            v=int(clientes[11])
+            rpm=int(clientes[12])
+            amp=int(clientes[13])
+            datos=clientes[14]
+            if  vol == v:
+                if idcliente == clienteid and idmotor==motor:
+                    registro=nombrec,nombrem,str(hp),str(v),str(rpm),str(amp)
+                    lista.append(registro)
+            clientes=cursor.fetchone()
+        c=0
+        for a in (lista):
+            self.tablewidget.setRowCount(c+1)
+            self.tablewidget.setHorizontalHeaderLabels(["Nombre","Marca","Hp","Voltaje","Rpm","Amp"])
+            self.tablewidget.setItem(c,0, QTableWidgetItem(a[0]))
+            self.tablewidget.setItem(c,1, QTableWidgetItem(a[1]))
+            self.tablewidget.setItem(c,2, QTableWidgetItem(str(a[2])))
+            self.tablewidget.setItem(c,3, QTableWidgetItem(str(a[3])))
+            self.tablewidget.setItem(c,4, QTableWidgetItem(str(a[4])))
+            self.tablewidget.setItem(c,5, QTableWidgetItem(str(a[5])))
+            c+=1
+
+    def RpmTabla(self):
+        if self.tablewidget !="":
+            self.tablewidget.clear()
+        sql="select * from clientes,motores,datosmotores"
+        cursor.execute(sql)
+        self.tablewidget.setRowCount(0)
+        xrpm=int(self.rpm.currentText())
+        clientes=cursor.fetchone()
+        lista=[]
+        while clientes != None:
+            idcliente=int(clientes[0])
+            idmotor=int(clientes[4])
+            clienteid=int(clientes[5])
+            nombrec=clientes[1]
+            nombrem=clientes[6]
+            fecha=clientes[7]
+            estado=int(clientes[8])
+            motor=int(clientes[9])
+            hp=int(clientes[10])
+            v=int(clientes[11])
+            rpm=int(clientes[12])
+            amp=int(clientes[13])
+            datos=clientes[14]
+            if  xrpm == rpm:
+                if idcliente == clienteid and idmotor==motor:
+                    registro=nombrec,nombrem,str(hp),str(v),str(rpm),str(amp)
+                    lista.append(registro)
+            clientes=cursor.fetchone()
+        c=0
+        for a in (lista):
+            self.tablewidget.setRowCount(c+1)
+            self.tablewidget.setHorizontalHeaderLabels(["Nombre","Marca","Hp","Voltaje","Rpm","Amp"])
+            self.tablewidget.setItem(c,0, QTableWidgetItem(a[0]))
+            self.tablewidget.setItem(c,1, QTableWidgetItem(a[1]))
+            self.tablewidget.setItem(c,2, QTableWidgetItem(str(a[2])))
+            self.tablewidget.setItem(c,3, QTableWidgetItem(str(a[3])))
+            self.tablewidget.setItem(c,4, QTableWidgetItem(str(a[4])))
+            self.tablewidget.setItem(c,5, QTableWidgetItem(str(a[5])))
+            c+=1
+
+    def AmpTabla(self):
+        if self.tablewidget !="":
+            self.tablewidget.clear()
+        sql="select * from clientes,motores,datosmotores"
+        cursor.execute(sql)
+        self.tablewidget.setRowCount(0)
+        ampe=int(self.amp.currentText())
+        clientes=cursor.fetchone()
+        lista=[]
+        while clientes != None:
+            idcliente=int(clientes[0])
+            idmotor=int(clientes[4])
+            clienteid=int(clientes[5])
+            nombrec=clientes[1]
+            nombrem=clientes[6]
+            fecha=clientes[7]
+            estado=int(clientes[8])
+            motor=int(clientes[9])
+            hp=int(clientes[10])
+            v=int(clientes[11])
+            rpm=int(clientes[12])
+            amp=int(clientes[13])
+            datos=clientes[14]
+            if  ampe == amp:
+                if idcliente == clienteid and idmotor==motor:
+                    registro=nombrec,nombrem,str(hp),str(v),str(rpm),str(amp)
+                    lista.append(registro)
+            clientes=cursor.fetchone()
+        c=0
+        for a in (lista):
+            self.tablewidget.setRowCount(c+1)
+            self.tablewidget.setHorizontalHeaderLabels(["Nombre","Marca","Hp","Voltaje","Rpm","Amp"])
+            self.tablewidget.setItem(c,0, QTableWidgetItem(a[0]))
+            self.tablewidget.setItem(c,1, QTableWidgetItem(a[1]))
+            self.tablewidget.setItem(c,2, QTableWidgetItem(str(a[2])))
+            self.tablewidget.setItem(c,3, QTableWidgetItem(str(a[3])))
+            self.tablewidget.setItem(c,4, QTableWidgetItem(str(a[4])))
+            self.tablewidget.setItem(c,5, QTableWidgetItem(str(a[5])))
+            c+=1
